@@ -1,0 +1,176 @@
+{
+  "name": "Gmail Autoreply",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a3dce496-a544-4d1f-a7df-1fbe474881a8",
+      "name": "When chat message received",
+      "webhookId": "200ea886-2cac-4085-b2a1-e8faa738fbcf"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        288,
+        0
+      ],
+      "id": "1ff34a58-249a-4808-84cc-4dcc517fea91",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "a5397045-95a6-4184-995b-07358d60f3c9",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "SpMy6wAsRxSP3KnW",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "d8f0d4dc-917d-4500-9b0a-099bac1fdf34",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "receivedAfter": "=2026-04-10T00:00:00"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        224
+      ],
+      "id": "0f387cba-c123-4dd3-b1a4-e0c7c496d844",
+      "name": "Get many messages in Gmail",
+      "webhookId": "41c2b42f-db60-4a4c-801f-af3a1988e70c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NTmWeUPPpwuKKJ6o",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', ``, 'string') }}",
+        "emailType": "text",
+        "message": "Hi , sorry for late reply we are going to go karting thanks meghana",
+        "options": {
+          "replyToSenderOnly": "={{ false }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        352
+      ],
+      "id": "f5d24329-58e0-4173-a1d6-3c388f2cb1e6",
+      "name": "Reply to a message in Gmail",
+      "webhookId": "9ab1c6a7-02aa-407f-95e1-371b717d8a8a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NTmWeUPPpwuKKJ6o",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Reply to a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "90b0d6b8-4341-4a63-bfd0-63eb48223ce8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa0894fbbdf2bb10061a3b1442a6543f6be9f819a294772c2cb9471b450cc467"
+  },
+  "id": "Uci5Gt1jS6yCik7X",
+  "tags": []
+}
