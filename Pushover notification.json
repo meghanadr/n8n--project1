@@ -1,0 +1,167 @@
+{
+  "name": "Pushover notification",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a9224191-383e-4556-ac50-79b5b91b7f4d",
+      "name": "When chat message received",
+      "webhookId": "62f87f4a-aa77-4e6b-b40d-6924e7c01074"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        0
+      ],
+      "id": "8970eeaf-d290-46f3-813c-587c5d68e9a8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "c85b8e3a-835d-45a8-896b-09245c567677",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "SpMy6wAsRxSP3KnW",
+          "name": "OpenRouter account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "a857a8cd-5a20-40b6-ad31-93ad99a56521",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "userKey": "u6j6aai8mgiizkekj8iu9ge7mz4aob",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.pushoverTool",
+      "typeVersion": 1,
+      "position": [
+        480,
+        224
+      ],
+      "id": "ff47731b-fcc4-4316-9719-52efe31f6472",
+      "name": "Push a message in Pushover",
+      "credentials": {
+        "pushoverApi": {
+          "id": "AEDECJph33OxOyFT",
+          "name": "Pushover account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        576,
+        352
+      ],
+      "id": "43b137f2-3d0e-47d9-9fdc-7f14617a0454",
+      "name": "Date & Time"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Push a message in Pushover": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e8f17e8a-968f-4396-af43-4a76c9a09eff",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa0894fbbdf2bb10061a3b1442a6543f6be9f819a294772c2cb9471b450cc467"
+  },
+  "id": "LmuDeiuF8yBXTGrf",
+  "tags": []
+}
